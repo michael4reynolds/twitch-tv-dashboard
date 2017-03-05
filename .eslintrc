@@ -1,0 +1,15 @@
+{
+  "extends": "react-app",
+  "rules": {
+    "semi": [2, "never"],
+    "eol-last": "error",
+    "indent": ["error", 2, {"SwitchCase": 1, "VariableDeclarator": 2}],
+    "comma-spacing": ["error", {"before": false, "after": true}],
+    "array-bracket-spacing": "error",
+    "object-curly-spacing": ["warn", "never"],
+    "padded-blocks": ["warn", "never"],
+    "no-multiple-empty-lines": ["warn", {"max": 2, "maxEOF": 0}],
+    "no-trailing-spaces": ["error"],
+    "no-confusing-arrow": "off"
+  }
+}
