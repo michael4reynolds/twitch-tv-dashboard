@@ -5,8 +5,10 @@ const twitchApi = 'https://api.twitch.tv/kraken'
 const streamsLink = `${twitchApi}/streams`
 const userLink = `${twitchApi}/users`
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
-const validateStatus = status => (status >= 200 && status < 300) || status === 404
+const filters = {all: 'all', online: 'online', offline: 'offline'}
+let currentFilter = filters.all
 
+const validateStatus = status => (status >= 200 && status < 300) || status === 404
 const queryParams = (channel) => ({channel})
 
 // View
@@ -80,9 +82,20 @@ const getChannels = async (channels) => {
   return await Promise.all(details)
 }
 
+const filter = (condition, next, prev) => {
+  return condition ? prev + channelView(next) : prev
+}
+
 const displayChannels = (channels) => {
   return channels.reduce((prev, next) => {
-    return prev + channelView(next)
+    switch (currentFilter) {
+      case filters.online:
+        return filter(next.online, next, prev)
+      case filters.offline:
+        return filter(!next.online || next.error, next, prev)
+      default:
+        return filter(true, next, prev)
+    }
   }, '')
 }
 
