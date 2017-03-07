@@ -2,8 +2,8 @@ import axios from 'axios'
 
 // Model
 const twitchApi = 'https://api.twitch.tv/kraken'
-const streams = `${twitchApi}/streams`
-// const channels = `${twitchApi}/channels`
+const streamsLink = `${twitchApi}/streams`
+// const channelLink = `${twitchApi}/channels`
 const twitchLink = 'https://www.twitch.tv'
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
 
@@ -15,7 +15,7 @@ const link = document.querySelector('a')
 
 // Controller
 const getIsOnline = async (channels) => {
-  const {data} = await axios.get(streams, {
+  const {data} = await axios.get(streamsLink, {
     headers: headers,
     params: queryParams(channels)
   })
