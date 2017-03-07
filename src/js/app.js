@@ -5,6 +5,7 @@ const twitchApi = 'https://api.twitch.tv/kraken'
 const streamsLink = `${twitchApi}/streams`
 const userLink = `${twitchApi}/users`
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
+const validateStatus = status => (status >= 200 && status < 300) || status === 404
 
 const queryParams = (channel) => ({channel})
 
@@ -12,6 +13,17 @@ const queryParams = (channel) => ({channel})
 const link = document.querySelector('a')
 
 const channelView = (result) => {
+  if (result.error) {
+    return `
+      <li>
+        <span>      
+          ${result.displayName}
+        </span>
+        <span>      
+          ${result.error}
+        </span>
+      </li>`
+  }
   return `
     <li>
       <span>      
@@ -44,11 +56,12 @@ const getOnlineUser = async (data) => {
 }
 
 const getOfflineUser = async (channels) => {
-  const {data} = await axios.get(`${userLink}/${channels}`, {headers: headers})
+  const {data} = await axios.get(`${userLink}/${channels}`, {headers, validateStatus})
   return {
     displayName: channels,
     online: false,
-    logo: data.logo
+    logo: data.logo,
+    error: data.error
   }
 }
 
@@ -77,7 +90,7 @@ const displayChannels = (channels) => {
 const init = async () => {
   try {
     const channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
-      "habathcx", "RobotCaleb", "noobs2ninjas"]
+      "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
     const results = await getChannels(channels)
     link.innerHTML = displayChannels(results)
   } catch (e) {
