@@ -4,6 +4,7 @@ import axios from 'axios'
 const twitchApi = 'https://api.twitch.tv/kraken'
 const streamsLink = `${twitchApi}/streams`
 const userLink = `${twitchApi}/users`
+const noImageLink = 'https://upload.wikimedia.org/wikipedia/commons/d/d5/No_sign.svg'
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
 const filters = {all: 'all', online: 'online', offline: 'offline'}
 let currentFilter = filters.all
@@ -22,6 +23,9 @@ const channelView = (result) => {
           ${result.displayName}
         </span>
         <span>      
+          <img src="${noImageLink}" alt="image unavailable">
+        </span>        
+        <span>      
           ${result.error}
         </span>
       </li>`
@@ -32,7 +36,7 @@ const channelView = (result) => {
         ${result.displayName}
       </span>
       <span>      
-        ${result.logo}
+        <img src="${result.logo}" alt="channel logo">
       </span>
       <span>      
         ${result.online}
