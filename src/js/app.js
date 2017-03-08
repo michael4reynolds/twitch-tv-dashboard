@@ -14,7 +14,7 @@ const validateStatus = status => (status >= 200 && status < 300) || status === 4
 const queryParams = (channel) => ({channel})
 
 // View
-const link = document.querySelector('a')
+const rows = document.querySelector('ul')
 
 const channelView = (result) => {
   if (result.error) {
@@ -112,7 +112,7 @@ const init = async () => {
     const channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
       "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
     const results = await getChannels(channels)
-    link.innerHTML = displayChannels(results)
+    rows.innerHTML = displayChannels(results)
   } catch (e) {
     console.log(e)
   }
