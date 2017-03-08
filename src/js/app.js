@@ -20,11 +20,11 @@ const channelView = (result) => {
     return `
       <li>
         <span>      
-          ${result.displayName}
-        </span>
+          <img class="logo" src="${noImageLink}" alt="image unavailable">
+        </span> 
         <span>      
-          <img src="${noImageLink}" alt="image unavailable">
-        </span>        
+          ${result.displayName}
+        </span>       
         <span>      
           ${result.error}
         </span>
@@ -33,10 +33,10 @@ const channelView = (result) => {
   return `
     <li>
       <span>      
-        ${result.displayName}
+        <img class="logo" src="${result.logo}" alt="channel logo">
       </span>
       <span>      
-        <img src="${result.logo}" alt="channel logo">
+        ${result.displayName}
       </span>
       <span>      
         ${result.online}
