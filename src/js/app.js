@@ -86,21 +86,21 @@ const getChannels = async (channels) => {
   return await Promise.all(details)
 }
 
-const filter = (condition, next, prev) => {
-  return condition ? prev + channelView(next) : prev
+const isShown = (item) => {
+  switch (currentFilter) {
+    case filters.online :
+      return item.online
+    case filters.offline:
+      return !item.online || item.error
+    default:
+      return true
+  }
 }
 
 const displayChannels = (channels) => {
-  return channels.reduce((prev, next) => {
-    switch (currentFilter) {
-      case filters.online:
-        return filter(next.online, next, prev)
-      case filters.offline:
-        return filter(!next.online || next.error, next, prev)
-      default:
-        return filter(true, next, prev)
-    }
-  }, '')
+  return channels
+    .filter(isShown)
+    .reduce((prev, next) => prev + channelView(next), '')
 }
 
 // initialize
