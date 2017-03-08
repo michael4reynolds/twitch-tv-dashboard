@@ -3,6 +3,7 @@ import axios from 'axios'
 // Model
 const twitchApi = 'https://api.twitch.tv/kraken'
 const streamsLink = `${twitchApi}/streams`
+const twitchLink = 'https://www.twitch.tv'
 const userLink = `${twitchApi}/users`
 const noImageLink = 'https://upload.wikimedia.org/wikipedia/commons/d/d5/No_sign.svg'
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
@@ -36,7 +37,9 @@ const channelView = (result) => {
         <img class="logo" src="${result.logo}" alt="channel logo">
       </span>
       <span>      
-        ${result.displayName}
+        <a href="${twitchLink}/${result.displayName}" target="_blank">
+          ${result.displayName}
+        </a>
       </span>
       <span>      
         ${result.online}
