@@ -67,7 +67,7 @@ const getOnlineUser = async (data) => {
 const getOfflineUser = async (channels) => {
   const {data} = await axios.get(`${userLink}/${channels}`, {headers, validateStatus})
   return {
-    displayName: channels,
+    displayName: data.display_name || channels,
     online: false,
     logo: data.logo,
     error: data.error

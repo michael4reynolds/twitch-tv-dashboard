@@ -75,30 +75,32 @@ body {
     border-radius: 10px;
     background: var(--ebony-clay);
     display: grid;
-    grid-template-columns: 80px 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr;
     grid-template-rows: auto;
-    grid-template-areas: "logo   name   online"
-                         "logo   game   game"
-                         "logo   stream stream";
+    grid-template-areas: "logo name   online"
+                         "logo game   game"
+                         "logo stream stream";
     span {
+      line-height: 1.2;
+      min-height: 50%;
+      padding-top: 5px;
       &:nth-child(1) {
-        border: 2px solid red;
+        line-height: unset;
+        min-height: inherit;
         grid-area: logo;
+        align-self: center;
+        margin-right: .75em;
       }
       &:nth-child(2) {
-        border: 2px solid green;
         grid-area: name;
       }
       &:nth-child(3) {
-        border: 2px solid blue;
         grid-area: online;
       }
       &:nth-child(4) {
-        border: 2px solid yellow;
         grid-area: game;
       }
       &:nth-child(5) {
-        border: 2px solid purple;
         grid-area: stream;
       }
     }
