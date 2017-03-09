@@ -74,6 +74,34 @@ body {
     border: 1px solid var(--ironside-gray);
     border-radius: 10px;
     background: var(--ebony-clay);
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "logo   name   online"
+                         "logo   game   game"
+                         "logo   stream stream";
+    span {
+      &:nth-child(1) {
+        border: 2px solid red;
+        grid-area: logo;
+      }
+      &:nth-child(2) {
+        border: 2px solid green;
+        grid-area: name;
+      }
+      &:nth-child(3) {
+        border: 2px solid blue;
+        grid-area: online;
+      }
+      &:nth-child(4) {
+        border: 2px solid yellow;
+        grid-area: game;
+      }
+      &:nth-child(5) {
+        border: 2px solid purple;
+        grid-area: stream;
+      }
+    }
     .logo {
       max-width: 65px;
       max-height: 65px;
