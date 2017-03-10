@@ -1,4 +1,5 @@
 import axios from 'axios'
+import classnames from 'classnames'
 
 // Model
 const twitchApi = 'https://api.twitch.tv/kraken'
@@ -16,24 +17,36 @@ const queryParams = (channel) => ({channel})
 // View
 const rows = document.querySelector('ul')
 
+const displayState = {
+  true: 'Online',
+  false: 'Offline',
+  'Not Found': 'Not Registered'
+}
+
 const channelView = (result) => {
   if (result.error) {
     return `
-      <li>
+      <li class="not-registered">
         <span>      
           <img class="logo" src="${noImageLink}" alt="image unavailable">
         </span> 
         <span>      
           ${result.displayName}
         </span>       
-        <span>      
-          ${result.error}
+        <span class=${classnames({'no-status': result.error})}>      
+          ${displayState[result.error]}
         </span>
       </li>`
   }
+
+  const status = classnames({
+    'online': result.online,
+    'offline': !result.online
+  })
+
   return `
-    <li>
-      <span>      
+    <li class=${status}>
+      <span>
         <img class="logo" src="${result.logo}" alt="channel logo">
       </span>
       <span>      
@@ -41,8 +54,8 @@ const channelView = (result) => {
           ${result.displayName}
         </a>
       </span>
-      <span>      
-        ${result.online}
+      <span class=${`${status}-status`}>      
+        ${displayState[result.online]}
       </span>
       <span>      
         ${result.game || ''}
@@ -89,7 +102,7 @@ const getChannels = async (channels) => {
   return await Promise.all(details)
 }
 
-const isShown = (item) => {
+const stateFilter = (item) => {
   switch (currentFilter) {
     case filters.online :
       return item.online
@@ -102,7 +115,7 @@ const isShown = (item) => {
 
 const displayChannels = (channels) => {
   return channels
-    .filter(isShown)
+    .filter(stateFilter)
     .reduce((prev, next) => prev + channelView(next), '')
 }
 
