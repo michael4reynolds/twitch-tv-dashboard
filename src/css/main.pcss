@@ -93,7 +93,7 @@ body {
     border-radius: 10px;
     background: var(--ebony-clay);
     display: grid;
-    grid-template-columns: auto 3fr 1fr;
+    grid-template-columns: auto 2fr 1fr;
     grid-template-rows: auto;
     grid-template-areas: "logo name   online"
                          "logo game   game"
@@ -114,6 +114,7 @@ body {
       }
       &:nth-child(3) {
         grid-area: online;
+        text-align: right;
       }
       &:nth-child(4) {
         grid-area: game;
