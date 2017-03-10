@@ -10,12 +10,18 @@ const noImageLink = 'https://upload.wikimedia.org/wikipedia/commons/d/d5/No_sign
 const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
 const filters = {all: 'all', online: 'online', offline: 'offline'}
 let currentFilter = filters.all
+let results
+let channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
+  "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
 
 const validateStatus = status => (status >= 200 && status < 300) || status === 404
 const queryParams = (channel) => ({channel})
 
 // View
 const rows = document.querySelector('ul')
+const btnAll = document.getElementById('view-all')
+const btnOnline = document.getElementById('view-online')
+const btnOffline = document.getElementById('view-offline')
 
 const displayState = {
   true: 'Online',
@@ -119,13 +125,30 @@ const displayChannels = (channels) => {
     .reduce((prev, next) => prev + channelView(next), '')
 }
 
+const setResults = async () => results = await getChannels(channels)
+
+function refreshDisplay() {
+  rows.innerHTML = displayChannels(results)
+}
+
+async function setFilter(e, filter) {
+  let buttons = Array.from(document.querySelectorAll('[class$=selected]'))
+  buttons.forEach(el => el.className = '')
+
+  currentFilter = filter
+  e.target.className = classnames('selected')
+  await refreshDisplay()
+}
+
 // initialize
 const init = async () => {
   try {
-    const channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
-      "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
-    const results = await getChannels(channels)
-    rows.innerHTML = displayChannels(results)
+    btnAll.onclick = (e) => setFilter(e, filters.all)
+    btnOnline.onclick = (e) => setFilter(e, filters.online)
+    btnOffline.onclick = (e) => setFilter(e, filters.offline)
+
+    results = await setResults()
+    refreshDisplay()
   } catch (e) {
     console.log(e)
   }
