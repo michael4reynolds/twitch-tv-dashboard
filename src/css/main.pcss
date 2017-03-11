@@ -60,6 +60,28 @@ body {
   width: 100%;
   max-width: 760px;
   margin: 0 auto;
+  .search-bar {
+    form {
+      display: flex;
+      justify-content: center;
+      #search-text {
+        background: url("../images/search.svg") no-repeat center right 10px;
+        background-size: .9em;
+        border: 1px solid var(--green-tomato);
+        border-radius: 10px;
+        color: color(var(--swirl) whiteness(5%));
+        font-size: 1.6em;
+        margin: 10px 0 20px 0;
+        outline: none;
+        padding: 5px 42px 5px 10px;
+        flex: 0 1 80%;
+        transition: background-color .2s ease-in-out;
+        &:focus {
+          background-color: color(var(--ebony-clay) whiteness(-5%));
+        }
+      }
+    }
+  }
   .view-chooser {
     display: flex;
     justify-content: space-around;
