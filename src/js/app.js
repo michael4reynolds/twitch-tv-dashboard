@@ -1,5 +1,6 @@
 import axios from 'axios'
 import classnames from 'classnames'
+import v from 'voca'
 
 // Model
 const twitchApi = 'https://api.twitch.tv/kraken'
@@ -11,7 +12,7 @@ const headers = {'client-id': process.env.REACT_APP_ClIENT_ID}
 const filters = {all: 'all', online: 'online', offline: 'offline'}
 let currentFilter = filters.all
 let results
-let channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
+let defaultChannels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
   "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
 
 const validateStatus = status => (status >= 200 && status < 300) || status === 404
@@ -22,6 +23,8 @@ const rows = document.querySelector('ul')
 const btnAll = document.getElementById('view-all')
 const btnOnline = document.getElementById('view-online')
 const btnOffline = document.getElementById('view-offline')
+const searchForm = document.querySelector('.search-bar form')
+const searchText = document.getElementById('search-text')
 
 const displayState = {
   true: 'Online',
@@ -98,12 +101,13 @@ const getChannelData = async (channels) => {
     headers: headers,
     params: queryParams(channels)
   })
-  return !!+data._total ? getOnlineUser(data) : getOfflineUser(channels)
+  return +data._total ? getOnlineUser(data) : getOfflineUser(channels)
 }
 
 const getChannels = async (channels) => {
-  let details = channels.map(async (channel) => {
-    return await getChannelData(channel)
+  let values = !v.isBlank(channels) ? channels.split(',') : defaultChannels
+  let details = values.map(async (channel) => {
+    return await getChannelData(channel.trim())
   })
   return await Promise.all(details)
 }
@@ -125,13 +129,10 @@ const displayChannels = (channels) => {
     .reduce((prev, next) => prev + channelView(next), '')
 }
 
-const setResults = async () => results = await getChannels(channels)
-
-function refreshDisplay() {
+const refreshDisplay = () => {
   rows.innerHTML = displayChannels(results)
 }
-
-async function setFilter(e, filter) {
+const setFilter = async (e, filter) => {
   let buttons = Array.from(document.querySelectorAll('[class$=selected]'))
   buttons.forEach(el => el.className = '')
 
@@ -140,15 +141,21 @@ async function setFilter(e, filter) {
   await refreshDisplay()
 }
 
+const submitForm = async (e) => {
+  if (e) e.preventDefault()
+  results = await getChannels(searchText.value.replace(/(\w+)\s+/gi, '\$1, '))
+  refreshDisplay()
+}
+
 // initialize
 const init = async () => {
   try {
     btnAll.onclick = (e) => setFilter(e, filters.all)
     btnOnline.onclick = (e) => setFilter(e, filters.online)
     btnOffline.onclick = (e) => setFilter(e, filters.offline)
+    searchForm.addEventListener('submit', submitForm)
 
-    results = await setResults()
-    refreshDisplay()
+    await submitForm()
   } catch (e) {
     console.log(e)
   }
