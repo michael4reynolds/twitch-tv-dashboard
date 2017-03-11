@@ -15,7 +15,7 @@ let results
 let defaultChannels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp",
   "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
 
-const validateStatus = status => (status >= 200 && status < 300) || status === 404
+const validateStatus = status => (status >= 200 && status < 300) || status === 404 || status === 422
 const queryParams = (channel) => ({channel})
 
 // View
@@ -29,7 +29,8 @@ const searchText = document.getElementById('search-text')
 const displayState = {
   true: 'Online',
   false: 'Offline',
-  'Not Found': 'Not Registered'
+  'Not Found': 'Not Registered',
+  'Unprocessable Entity': 'Unresolved'
 }
 
 const channelView = (result) => {
@@ -143,7 +144,7 @@ const setFilter = async (e, filter) => {
 
 const submitForm = async (e) => {
   if (e) e.preventDefault()
-  results = await getChannels(searchText.value.replace(/(\w+)\s+/gi, '\$1, '))
+  results = await getChannels(searchText.value.replace(/(\w+)\s+/gi, '$1, '))
   refreshDisplay()
 }
 
