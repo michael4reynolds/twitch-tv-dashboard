@@ -45,7 +45,8 @@
 /***************************/
 
 @custom-selector :--heading h1, h2, h3, h4, h5, h6, p;
-@custom-media --mobile (width <= 450px);
+@custom-media --tablet (width <= 640px);
+@custom-media --mobile (width <= 590px);
 
 body {
   @apply --body-fill;
@@ -67,8 +68,19 @@ body {
     margin: 1em;
     .logo {
       background: url(../images/logo.png) no-repeat center;
+      background-size: contain;
       width: 206px;
       height: 65px;
+      @media (--tablet) {
+        margin-right: 20px;
+      }
+      @media (--mobile) {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+    }
+    @media (--mobile) {
+      flex-direction: column;
     }
     form {
       display: flex;
@@ -121,39 +133,45 @@ body {
     list-style: none;
     margin: 1em;
     padding: 10px;
+    min-height: 6.875em;
     border: 1px solid var(--ironside-gray);
     border-radius: 10px;
     background: var(--ebony-clay);
-    display: grid;
-    grid-template-columns: auto 2fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas: "logo name   online"
-                         "logo game   game"
-                         "logo stream stream";
+    display: flex;
+    justify-content: space-between;
+    .logo-container {
+      flex: 0;
+      align-self: center;
+      margin-right: .75em;
+    }
+    .details-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto;
+      grid-template-areas: "name   online"
+                           "game   game"
+                           "stream stream";
+      flex: auto;
+      span {
+        &:nth-child(1) {
+          grid-area: name;
+        }
+        &:nth-child(2) {
+          grid-area: online;
+          text-align: right;
+        }
+        &:nth-child(3) {
+          grid-area: game;
+        }
+        &:nth-child(4) {
+          grid-area: stream;
+        }
+      }
+    }
     span {
       line-height: 1.2;
       min-height: 50%;
       padding-top: 5px;
-      &:nth-child(1) {
-        line-height: unset;
-        min-height: inherit;
-        grid-area: logo;
-        align-self: center;
-        margin-right: .75em;
-      }
-      &:nth-child(2) {
-        grid-area: name;
-      }
-      &:nth-child(3) {
-        grid-area: online;
-        text-align: right;
-      }
-      &:nth-child(4) {
-        grid-area: game;
-      }
-      &:nth-child(5) {
-        grid-area: stream;
-      }
     }
     .logo {
       max-width: 65px;
@@ -172,10 +190,6 @@ body {
   ul li, a {
     color: var(--green-tomato)
   }
-
-  @media (--mobile) {
-
-  }
 }
 
 .online-status {
@@ -193,9 +207,8 @@ body {
 /***************************/
 
 @supports not (display:grid) {
-  #li {
-    gg: columns(.33 .64)
-        rows(260px)
+  .details-container {
+    gg: columns(10% 90% 100% 100%)
         gutter(0);
   }
   @media (--mobile) {

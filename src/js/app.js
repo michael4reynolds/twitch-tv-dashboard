@@ -37,15 +37,17 @@ const channelView = (result) => {
   if (result.error) {
     return `
       <li class="not-registered">
-        <span>      
+        <div class="logo-container">
           <img class="logo" src="${noImageLink}" alt="image unavailable">
-        </span> 
-        <span>      
-          ${result.displayName}
-        </span>       
-        <span class=${classnames({'no-status': result.error})}>      
-          ${displayState[result.error]}
-        </span>
+        </div>
+        <div class="details-container">
+          <span>      
+            ${result.displayName}
+          </span>       
+          <span class=${classnames({'no-status': result.error})}>      
+            ${displayState[result.error]}
+          </span>
+        </div>
       </li>`
   }
 
@@ -56,23 +58,27 @@ const channelView = (result) => {
 
   return `
     <li class=${status}>
-      <span>
-        <img class="logo" src="${result.logo}" alt="channel logo">
-      </span>
-      <span>      
-        <a href="${twitchLink}/${result.displayName}" target="_blank">
-          ${result.displayName}
-        </a>
-      </span>
-      <span class=${`${status}-status`}>      
-        ${displayState[result.online]}
-      </span>
-      <span>      
-        ${result.game || ''}
-      </span>
-      <span>      
-        ${result.status || ''}
-      </span>
+      <div class="logo-container">
+        <span>
+          <img class="logo" src="${result.logo}" alt="channel logo">
+        </span>
+      </div>
+      <div class="details-container">      
+        <span>      
+          <a href="${twitchLink}/${result.displayName}" target="_blank">
+            ${result.displayName}
+          </a>
+        </span>
+        <span class=${`${status}-status`}>      
+          ${displayState[result.online]}
+        </span>
+        <span>      
+          ${result.game || ''}
+        </span>
+        <span>      
+          ${result.status || ''}
+        </span>
+      </div>
     </li>`
 }
 
@@ -151,6 +157,7 @@ const submitForm = async (e) => {
 // initialize
 const init = async () => {
   try {
+    btnAll.className += 'selected'
     btnAll.onclick = (e) => setFilter(e, filters.all)
     btnOnline.onclick = (e) => setFilter(e, filters.online)
     btnOffline.onclick = (e) => setFilter(e, filters.offline)
