@@ -139,6 +139,7 @@ const displayChannels = (channels) => {
 const refreshDisplay = () => {
   rows.innerHTML = displayChannels(results)
 }
+
 const setFilter = async (e, filter) => {
   let buttons = Array.from(document.querySelectorAll('[class$=selected]'))
   buttons.forEach(el => el.className = '')
